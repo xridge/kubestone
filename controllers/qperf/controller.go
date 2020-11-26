@@ -20,9 +20,11 @@ import (
 	"context"
 
 	"github.com/go-logr/logr"
+	batchv1 "k8s.io/api/batch/v1"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 
+	"github.com/xridge/kubestone/controllers/common"
 	"github.com/xridge/kubestone/pkg/k8s"
 
 	perfv1alpha1 "github.com/xridge/kubestone/api/v1alpha1"
@@ -46,20 +48,16 @@ type Reconciler struct {
 // deployment completes. Once the qperf client pod is completed,
 // the server deployment and service objects are removed from k8s.
 func (r *Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
-	ctx := context.Background()
-
 	var cr perfv1alpha1.Qperf
-	if err := r.K8S.Client.Get(ctx, req.NamespacedName, &cr); err != nil {
-		return ctrl.Result{}, k8s.IgnoreNotFound(err)
+	ctx := context.Background()
+	commonCr := common.CustomResource{Rto: &cr, Status: cr.Status, NewJobFn: func() *batchv1.Job { return NewClientJob(&cr) }}
+	commonReconciler := common.Reconciler{K8S: r.K8S, Log: r.Log}
+
+	if reconciled, err := commonReconciler.IsCrReconciled(ctx, commonCr, req); reconciled || err != nil {
+		return ctrl.Result{}, err
 	}
 
-	// Run to one completion
-	if cr.Status.Completed {
-		return ctrl.Result{}, nil
-	}
-
-	cr.Status.Running = true
-	if err := r.K8S.Client.Status().Update(ctx, &cr); err != nil {
+	if err := commonReconciler.MarkCrAsCompleted(ctx, commonCr); err != nil {
 		return ctrl.Result{}, err
 	}
 
@@ -87,14 +85,7 @@ func (r *Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{Requeue: true}, nil
 	}
 
-	if err := r.K8S.CreateWithReference(ctx, NewClientJob(&cr), &cr); err != nil {
-		return ctrl.Result{}, err
-	}
-
-	jobFinished, err := r.K8S.IsJobFinished(types.NamespacedName{
-		Namespace: cr.Namespace,
-		Name:      clientJobName(&cr),
-	})
+	jobFinished, err := commonReconciler.HandleJob(ctx, commonCr, req)
 	if err != nil {
 		return ctrl.Result{}, err
 	}
@@ -111,9 +102,7 @@ func (r *Reconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 		return ctrl.Result{}, err
 	}
 
-	cr.Status.Running = false
-	cr.Status.Completed = true
-	if err := r.K8S.Client.Status().Update(ctx, &cr); err != nil {
+	if err := commonReconciler.MarkCrAsCompleted(ctx, commonCr); err != nil {
 		return ctrl.Result{}, err
 	}
 
