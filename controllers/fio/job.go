@@ -45,6 +45,7 @@ func NewJob(cr *perfv1alpha1.Fio) *batchv1.Job {
 
 	volumes := []corev1.Volume{}
 	volumeMounts := []corev1.VolumeMount{}
+	volumeDevices := []corev1.VolumeDevice{}
 	if len(cr.Spec.CustomJobFiles) > 0 {
 		volumes = append(volumes, corev1.Volume{
 			Name: "custom-jobs",
@@ -67,11 +68,16 @@ func NewJob(cr *perfv1alpha1.Fio) *batchv1.Job {
 	volumeMounts = append(volumeMounts, corev1.VolumeMount{
 		Name: "data", MountPath: "/data",
 	})
+	volumeDevices = append(volumeDevices, corev1.VolumeDevice{
+		Name: cr.Spec.Volume.VolumeDevice.Name, DevicePath: cr.Spec.Volume.VolumeDevice.DevicePath,
+	})
 
 	job := k8s.NewPerfJob(objectMeta, "fio", cr.Spec.Image, cr.Spec.PodConfig)
 	job.Spec.Template.Spec.Volumes = volumes
 	job.Spec.Template.Spec.Containers[0].Args = fioCmdLineArgs
 	job.Spec.Template.Spec.Containers[0].VolumeMounts = volumeMounts
+	job.Spec.Template.Spec.Containers[0].VolumeDevices = volumeDevices
+
 	return job
 }
 

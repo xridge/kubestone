@@ -18,6 +18,7 @@ package v1alpha1
 
 import (
 	"errors"
+
 	corev1 "k8s.io/api/core/v1"
 )
 
@@ -76,7 +77,7 @@ type VolumeSpec struct {
 	// The PVC will be created based on the PersistentVolumeClaimSpec provided
 	// to the VolumeSpec.
 	VolumeSource corev1.VolumeSource `json:"volumeSource"`
-
+	VolumeDevice corev1.VolumeDevice `json:"volumeDevice"`
 	// PersistentVolumeClaimSpec describes the persistent volume claim that will be
 	// created and used by the pod. If specified, the VolumeSource.PersistentVolumeClaim's
 	// claimName must be set to 'GENERATED'
