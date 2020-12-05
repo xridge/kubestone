@@ -32,7 +32,7 @@ const (
 )
 
 var _ = Describe("end to end test", func() {
-	fioCrDirs := []string{fioCrBaseDir + "/base"}
+	fioCrDirs := []string{fioCrBaseDir + "/base/"}
 	fioOverlayContents, err := ioutil.ReadDir(fioCrBaseDir + "/overlays")
 	if err != nil {
 		Fail("Didn't find any fio CRs under " + fioCrBaseDir)
