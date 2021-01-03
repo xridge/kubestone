@@ -25,7 +25,7 @@ This guide will walk you through on the one the installation process and will sh
 Deploy Kubestone to `kubestone-system` namespace with the following command:
 
 ```bash
-$ kustomize build github.com/xridge/kubestone/config/default?ref=v0.5.0 | sed "s/kubestone:latest/kubestone:v0.5.0/" | kubectl create -f -
+$ kustomize build github.com/xridge/kubestone/config/default?ref= | sed "s/kubestone:latest/kubestone:/" | kubectl create -f -
 ```
 
 Once deployed, Kubestone will listen for Custom Resources created with the `kubestone.xridge.io` group.

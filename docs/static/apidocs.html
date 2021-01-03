@@ -1025,6 +1025,8 @@ run on.</p>
 <a href="#perf.kubestone.xridge.io/v1alpha1.FioSpec">FioSpec</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.IopingSpec">IopingSpec</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.Iperf3Spec">Iperf3Spec</a>, 
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterController">JMeterController</a>, 
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterWorkers">JMeterWorkers</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.KafkaBenchSpec">KafkaBenchSpec</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.OcpLogtestSpec">OcpLogtestSpec</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.PgbenchSpec">PgbenchSpec</a>, 
@@ -1510,6 +1512,412 @@ bool
 <em>(Optional)</em>
 <p>UDP to use rather than TCP.
 If enabled the &lsquo;&ndash;udp&rsquo; parameter is added to iperf command line args</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="perf.kubestone.xridge.io/v1alpha1.JMeter">JMeter
+</h3>
+<p>
+<p>JMeter is the Schema for the jmeters API</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>metadata</code></br>
+<em>
+<a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.13/#objectmeta-v1-meta">
+Kubernetes meta/v1.ObjectMeta
+</a>
+</em>
+</td>
+<td>
+Refer to the Kubernetes API documentation for the fields of the
+<code>metadata</code> field.
+</td>
+</tr>
+<tr>
+<td>
+<code>spec</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterSpec">
+JMeterSpec
+</a>
+</em>
+</td>
+<td>
+<br/>
+<br/>
+<table>
+<tr>
+<td>
+<code>workers</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterWorkers">
+JMeterWorkers
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>JMeter Workers configuration
+If isn&rsquo;t defined, the controller perform as a single worker</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>controller</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterController">
+JMeterController
+</a>
+</em>
+</td>
+<td>
+<p>JMeter controller configuration</p>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<code>status</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterStatus">
+JMeterStatus
+</a>
+</em>
+</td>
+<td>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="perf.kubestone.xridge.io/v1alpha1.JMeterController">JMeterController
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterSpec">JMeterSpec</a>)
+</p>
+<p>
+<p>JMeterWorkers defines the</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>image</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.ImageSpec">
+ImageSpec
+</a>
+</em>
+</td>
+<td>
+<p>Image defines the docker image used for the benchmark</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>configuration</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.PodConfigurationSpec">
+PodConfigurationSpec
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>pod labels and scheduling policies (affinity, toleration, node selector&hellip;)</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>planTest</code></br>
+<em>
+map[string]string
+</em>
+</td>
+<td>
+<p>PlanTest define the jmeter plan test</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>testName</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<p>TestName define the jmeter test name</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>props</code></br>
+<em>
+map[string]string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Properties files definitions</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>propsName</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Properties passed to jmeter</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>volume</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.VolumeSpec">
+VolumeSpec
+</a>
+</em>
+</td>
+<td>
+<p>Volume to mount at result path</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>args</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Args are appended to the predefined jmeter parameters</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>command</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Command contains the command line passed to the main jmeter container</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>clusterDomain</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Cluster domain, used to construct the pods dns
+Default to cluster.local</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="perf.kubestone.xridge.io/v1alpha1.JMeterSpec">JMeterSpec
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeter">JMeter</a>)
+</p>
+<p>
+<p>JMeterSpec defines the desired state of JMeter</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>workers</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterWorkers">
+JMeterWorkers
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>JMeter Workers configuration
+If isn&rsquo;t defined, the controller perform as a single worker</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>controller</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterController">
+JMeterController
+</a>
+</em>
+</td>
+<td>
+<p>JMeter controller configuration</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="perf.kubestone.xridge.io/v1alpha1.JMeterStatus">JMeterStatus
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeter">JMeter</a>)
+</p>
+<p>
+<p>JMeterStatus defines the observed state of JMeter</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>running</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Running shows the state of execution</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>completed</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Completed shows the state of completion</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>valid</code></br>
+<em>
+bool
+</em>
+</td>
+<td>
+<p>Valid shows the state of the validation</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="perf.kubestone.xridge.io/v1alpha1.JMeterWorkers">JMeterWorkers
+</h3>
+<p>
+(<em>Appears on:</em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterSpec">JMeterSpec</a>)
+</p>
+<p>
+<p>JMeterWorkers defines the</p>
+</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<code>replicas</code></br>
+<em>
+int32
+</em>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<code>image</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.ImageSpec">
+ImageSpec
+</a>
+</em>
+</td>
+<td>
+<p>Image defines the docker image used for the benchmark</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>configuration</code></br>
+<em>
+<a href="#perf.kubestone.xridge.io/v1alpha1.PodConfigurationSpec">
+PodConfigurationSpec
+</a>
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>pod labels and scheduling policies (affinity, toleration, node selector&hellip;)</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>args</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Args are appended to the predefined jmeter parameters</p>
+</td>
+</tr>
+<tr>
+<td>
+<code>command</code></br>
+<em>
+string
+</em>
+</td>
+<td>
+<em>(Optional)</em>
+<p>Command contains the command line passed to the main jmeter container</p>
 </td>
 </tr>
 </tbody>
@@ -2382,6 +2790,8 @@ pod labels and scheduling policies (affinity, toleration, node selector&hellip;)
 <a href="#perf.kubestone.xridge.io/v1alpha1.FioSpec">FioSpec</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.IopingSpec">IopingSpec</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.Iperf3ConfigurationSpec">Iperf3ConfigurationSpec</a>, 
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterController">JMeterController</a>, 
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterWorkers">JMeterWorkers</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.KafkaBenchSpec">KafkaBenchSpec</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.OcpLogtestSpec">OcpLogtestSpec</a>, 
 <a href="#perf.kubestone.xridge.io/v1alpha1.PgbenchSpec">PgbenchSpec</a>, 
@@ -3878,7 +4288,8 @@ on a particular test. Some tests also implement their own custom commands.</p>
 <p>
 (<em>Appears on:</em>
 <a href="#perf.kubestone.xridge.io/v1alpha1.FioSpec">FioSpec</a>, 
-<a href="#perf.kubestone.xridge.io/v1alpha1.IopingSpec">IopingSpec</a>)
+<a href="#perf.kubestone.xridge.io/v1alpha1.IopingSpec">IopingSpec</a>, 
+<a href="#perf.kubestone.xridge.io/v1alpha1.JMeterController">JMeterController</a>)
 </p>
 <p>
 <p>VolumeSpec contains the Volume Definition used for the benchmarks.
@@ -4188,5 +4599,5 @@ pod labels and scheduling policies (affinity, toleration, node selector&hellip;)
 <hr/>
 <p><em>
 Generated with <code>gen-crd-api-reference-docs</code>
-on git commit <code>3ffb0c5</code>.
+on git commit <code>9db0477</code>.
 </em></p>

@@ -211,6 +211,32 @@ rules:
 - apiGroups:
   - perf.kubestone.xridge.io
   resources:
+  - jmeters
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - perf.kubestone.xridge.io
+  resources:
+  - jmeters/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - perf.kubestone.xridge.io
+  resources:
+  - jmeters/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - perf.kubestone.xridge.io
+  resources:
   - kafkabenches
   verbs:
   - create

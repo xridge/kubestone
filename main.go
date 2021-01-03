@@ -18,9 +18,11 @@ package main
 
 import (
 	"flag"
-	"github.com/xridge/kubestone/controllers/esrally"
-	"github.com/xridge/kubestone/controllers/ocplogtest"
 	"os"
+
+	"github.com/xridge/kubestone/controllers/esrally"
+	"github.com/xridge/kubestone/controllers/jmeter"
+	"github.com/xridge/kubestone/controllers/ocplogtest"
 
 	"github.com/xridge/kubestone/controllers/ycsbbench"
 
@@ -173,6 +175,13 @@ func main() {
 		Log: ctrl.Log.WithName("controllers").WithName("KafkaBench"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "KafkaBench")
+		os.Exit(1)
+	}
+	if err = (&jmeter.Reconciler{
+		K8S: k8sAccess,
+		Log: ctrl.Log.WithName("controllers").WithName("JMeter"),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "JMeter")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder
